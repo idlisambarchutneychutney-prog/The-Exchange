@@ -1,1 +1,239 @@
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Exchange</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=IBM+Plex+Mono:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
 
+    <!-- account screen -->
+    <div id="acc">
+      <div class="aw">
+        <div class="abrand">
+          <h1 class="alogo">
+            <span class="bt">THE</span><span class="ort"> </span><span class="brt">EXCHANGE</span>
+          </h1>
+          <p class="asub">Buy. Sell. Repeat.</p>
+        </div>
+
+        <div class="acard">
+          <div class="fg">
+            <div class="flbl">TRADER'S NAME</div>
+            <input class="finp" id="an" type="text" placeholder="trader_tag" maxlength="20" autocomplete="off">
+          </div>
+          <div class="fg">
+            <div class="flbl">EMAIL</div>
+            <input class="finp" id="ae" type="email" placeholder="you@gmail.com">
+          </div>
+          <div class="fg">
+            <div class="flbl">PASSWORD</div>
+            <input class="finp" id="ap" type="password" placeholder="••••••••">
+          </div>
+
+          <div class="ferr" id="aerr"></div>
+
+          <button class="fbtn" type="button" onclick="createAcc()">OPEN TRADING ACCOUNT</button>
+        </div>
+
+        <p class="afoot">Starting capital: $100.00 | Fictional simulation only</p>
+      </div>
+    </div>
+
+    <!-- main app -->
+    <div id="app">
+
+      <header id="hdr">
+        <div class="hlogo">
+          <span class="hb">THE</span><span class="ho"> </span><span class="hbr">EXCHANGE</span>
+        </div>
+        <div class="hsent bull" id="hsent">BULL MARKET</div>
+        <div id="tickwrap">
+          <div id="ticker"></div>
+        </div>
+        <div class="hright">
+          <span class="huser" id="huser">—</span>
+          <span class="hbal" id="hbal">$100.00</span>
+          <span class="hday" id="hday">DAY 1</span>
+        </div>
+      </header>
+
+      <div id="body">
+
+        <!-- left panel -->
+        <div class="panel">
+          <div class="ltabs">
+            <button class="ltab on" id="lt0" onclick="lTab(0)">
+              <span class="ic">📈</span>MARKET
+            </button>
+            <button class="ltab" id="lt1" onclick="lTab(1)">
+              <span class="ic">💼</span>PORT.
+            </button>
+            <button class="ltab" id="lt2" onclick="lTab(2)">
+              <span class="ic">👤</span>ACCT.
+            </button>
+          </div>
+
+          <!-- market tab -->
+          <div class="ltc on" id="lc0">
+            <div id="slist"></div>
+            <div class="cashbox">
+              <div class="clbl">LIQUID CASH</div>
+              <div class="cnum" id="cnum">$100.00</div>
+              <div class="csub" id="csub"></div>
+            </div>
+          </div>
+
+          <!-- portfolio tab -->
+          <div class="ltc" id="lc1">
+            <div class="porth">
+              <div class="portm">
+                <span class="pk">TOTAL VALUE</span>
+                <span class="pv" id="ptv">$100.00</span>
+              </div>
+              <div class="portm">
+                <span class="pk">UNREALIZED P&L</span>
+                <span class="pv" id="pup">$0.00</span>
+              </div>
+              <div class="portm">
+                <span class="pk">REALIZED P&L</span>
+                <span class="pv" id="prp">$0.00</span>
+              </div>
+            </div>
+            <div id="portlist"></div>
+          </div>
+
+          <!-- account tab -->
+          <div class="ltc" id="lc2">
+            <div class="attab" id="attab"></div>
+          </div>
+        </div>
+
+        <!-- center panel -->
+        <div class="panel" id="cpanel">
+          <div id="stkhdr">
+            <div>
+              <div class="shsym up" id="shsym">MEME</div>
+              <div class="shname" id="shname">Memeify Technologies Ltd.</div>
+              <div class="shsec" id="shsec">TECH</div>
+            </div>
+            <div class="shr">
+              <div class="shprice" id="shprice">$4.2000</div>
+              <div class="shchg up" id="shchg">+0.00%</div>
+              <div class="shheld" id="shheld">Held: 0 shares</div>
+            </div>
+          </div>
+
+          <div id="cscroll">
+
+            <div id="chartsec">
+              <canvas id="rtc"></canvas>
+              <div class="clbls">
+                <span id="chlo">L: $0.000</span>
+                <span>REAL-TIME PRICE</span>
+                <span id="chhi">H: $0.000</span>
+              </div>
+            </div>
+
+            <!-- order flow -->
+            <div id="bspanel">
+              <div class="bshdr">
+                <span class="bstit">ORDER FLOW</span>
+                <span class="bssent bull" id="bssent">BULL PRESSURE</span>
+              </div>
+              <div class="bsrow">
+                <span class="bside b">BUYERS</span>
+                <div class="bbar"><div class="bfill b" id="buybar" style="width:55%"></div></div>
+                <span class="bcnt up" id="buycnt">—</span>
+              </div>
+              <div class="bsrow">
+                <span class="bside s">SELLERS</span>
+                <div class="bbar"><div class="bfill s" id="sellbar" style="width:45%"></div></div>
+                <span class="bcnt dn" id="sellcnt">—</span>
+              </div>
+            </div>
+
+            <div id="progsec">
+              <span>NEXT EVENT</span>
+              <div id="pbar"><div id="pfill" style="width:100%"></div></div>
+              <span id="plbl">5s</span>
+            </div>
+
+            <!-- order ticket -->
+            <div id="tradepanel">
+              <div class="ttabs">
+                <button class="ttab buy on" id="tbbuy" onclick="setMode('buy')">BUY</button>
+                <button class="ttab sell" id="tbsell" onclick="setMode('sell')">SELL</button>
+              </div>
+
+              <div class="trow">
+                <span class="tlbl">SHARES</span>
+                <button class="qb" onclick="dq(-10)">−10</button>
+                <button class="qb" onclick="dq(-1)">−1</button>
+                <input type="number" id="tqty" value="1" min="1" max="99999">
+                <button class="qb" onclick="dq(1)">+1</button>
+                <button class="qb" onclick="dq(10)">+10</button>
+              </div>
+
+              <div class="trow">
+                <span class="tlbl">TOTAL</span>
+                <span class="tcost" id="tcost">$0.0000</span>
+                <span class="tavail" id="tavail">Max: 0</span>
+              </div>
+
+              <div class="trow" id="pnlrow" style="display:none">
+                <span class="tlbl">SELL P&L</span>
+                <span class="tpnl" id="tpnl">$0.00</span>
+              </div>
+
+              <button id="xbtn" class="bm" onclick="execTrade()">EXECUTE BUY ORDER</button>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- right panel -->
+        <div class="panel">
+          <div class="ptit">LIVE MARKET NEWS</div>
+          <div id="newsfeed"></div>
+
+          <div class="ptit">TRADE LOG</div>
+          <div id="logpanel"></div>
+        </div>
+
+      </div>
+
+      <footer id="sbar">
+        <div>
+          <span id="ms">MARKET OPEN</span>
+          &nbsp;&nbsp;
+          <span id="vold">VOL: 0</span>
+        </div>
+        <div>
+          TRADES: <span id="tct">0</span> &nbsp;|&nbsp;
+          BEST: <span id="bestg">—</span> &nbsp;|&nbsp;
+          WORST: <span id="worstl">—</span> &nbsp;|&nbsp;
+          WIN: <span id="winr">—</span>
+        </div>
+        <div>
+          <span id="clk"></span> The Exchange
+        </div>
+      </footer>
+
+    </div>
+
+    <!-- bust screen -->
+    <div id="bust">
+      <div class="btt">BANKRUPT</div>
+      <p class="bts">YOUR ACCOUNT HAS BEEN WIPED OUT</p>
+      <div class="btstats" id="buststats"></div>
+      <button id="rbtn" onclick="doRestart()">START OVER</button>
+    </div>
+
+    <div id="toasts"></div>
+
+    <script src="script.js"></script>
+  </body>
+  </html>
